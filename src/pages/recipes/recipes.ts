@@ -20,7 +20,7 @@ export class RecipesPage {
   }
 
   onNewRecipe(){
-    this.navCtrl.push(EditRecipePage, {mode:"new"});
+    this.navCtrl.push(EditRecipePage, {mode:"New"});
   }
 
   ionViewDidLoad() {
