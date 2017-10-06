@@ -21,4 +21,10 @@
     </ion-list>
     <button ion-button type="submit" [disabled]="!f.valid" block>Add</button>
   </form>
+
+  <ion-list>
+    <ion-item *ngFor="let thisItem of items; let i = index">
+      <h3><button (click)="removeItem(i)" ion-button> <ion-icon name="trash"></ion-icon> </button>{{thisItem.amount +  " x "+ thisItem.name}}</h3>
+    </ion-item>
+  </ion-list>
 </ion-content>
