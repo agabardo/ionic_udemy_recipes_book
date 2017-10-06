@@ -8,23 +8,30 @@
 
 
 <ion-content padding>
-  <form>
+  <form [formGroup]="recipeForm" (ngSubmit)="onSubmit()" >
     <ion-list>
       <ion-item>
         <ion-label floating>Title</ion-label>
-        <ion-input type="text"></ion-input>
+        <ion-input formControlName="title" type="text"></ion-input>
       </ion-item>
       <ion-item>
         <ion-label floating>Description</ion-label>
-        <ion-textarea type="text"></ion-textarea>
+        <ion-textarea formControlName="description" type="text"></ion-textarea>
       </ion-item>
     </ion-list>
     <ion-item>
       <ion-label floating>Difficulty</ion-label>
-      <ion-select>
+      <ion-select formControlName="dificulty">
         <ion-option *ngFor="let option of selectOptions" [value]="option" >{{option}}</ion-option>
       </ion-select>
     </ion-item>
-    <button ion-button type="submit" block>{{mode}} Recipe</button>
+    <button ion-button type="button" color="secondary" (click)="onManageIngridients()" block>Manage Ingridients</button>
+    <ion-list>
+        <ion-item>
+          <ion-label floating>Name</ion-label>
+          <ion-input type="text" name="ingridientName" required></ion-input>
+        </ion-item>
+    </ion-list>
+    <button [disabled]="!recipeForm.valid" ion-button type="submit" block>{{mode}} Recipe</button>
   </form>
 </ion-content>

@@ -18,10 +18,16 @@ export class EditRecipePage implements OnInit{
 
   ngOnInit(){
     this.mode = this.navParams.get('mode');
+    this.initializeForm();
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad EditRecipePage');
+
+  onManageIngridients(){
+    console.log("Oi");
+  }
+
+  onSubmit(){
+    console.log(this.recipeForm);
   }
 
   initializeForm(){
