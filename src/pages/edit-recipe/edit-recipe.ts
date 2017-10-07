@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {ActionSheetController, AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
+import {
+  ActionSheetController, AlertController, IonicPage, NavController, NavParams,
+  ToastController
+} from 'ionic-angular';
 import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
 
 @IonicPage()
@@ -18,6 +21,7 @@ export class EditRecipePage implements OnInit{
     public navParams: NavParams,
     private actionSheetController:ActionSheetController,
     private  alertCtrlr:AlertController,
+    private tostCtrlr:ToastController,
   ) {
   }
 
@@ -40,7 +44,21 @@ export class EditRecipePage implements OnInit{
           text:'Remove all ingridients',
           role:'destructive',
           handler: () => {
+            const fArray:FormArray = <FormArray>this.recipeForm.get('ingredients');
+            const len  = fArray.length;
+            if(len > 0){
+              for(let i = len - 1; i >= 0; i--){
+                fArray.removeAt(i);
+              }
 
+              const mtoast = this.tostCtrlr.create({
+                message:"Ingredients removed",
+                position:'bottom',
+                duration:1500,
+                showCloseButton:true,
+              });
+              mtoast.present();
+            }
           }
       },
         {
@@ -66,11 +84,26 @@ export class EditRecipePage implements OnInit{
         {
           text:"Add",
           handler: data => {
-            if(data.name.trim == "" || data.name == null){
+            if(data.name.trim() == '' || data.name == null){
+              const mtoast = this.tostCtrlr.create({
+                message:"Can not be empty",
+                position:'bottom',
+                duration:1500,
+                showCloseButton:true,
+              });
+              mtoast.present();
               return;
             }
-
-            (<FormArray>this.recipeForm.get('ingredients')).push(new FormControl(data.name, Validators.required));
+            else{
+              (<FormArray>this.recipeForm.get('ingredients')).push(new FormControl(data.name, Validators.required));
+              const mtoast = this.tostCtrlr.create({
+                message: data.name + " added",
+                position:'bottom',
+                duration:1500,
+                showCloseButton:true,
+              });
+              mtoast.present();
+            }
           }
         }
       ]
