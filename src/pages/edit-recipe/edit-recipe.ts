@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {ActionSheetController, IonicPage, NavController, NavParams} from 'ionic-angular';
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {ActionSheetController, AlertController, IonicPage, NavController, NavParams} from 'ionic-angular';
+import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
 
 @IonicPage()
 @Component({
@@ -13,7 +13,12 @@ export class EditRecipePage implements OnInit{
   selectOptions = ['Easy', 'Medium', 'Hard'];
   recipeForm: FormGroup;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private actionSheetController:ActionSheetController) {
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    private actionSheetController:ActionSheetController,
+    private  alertCtrlr:AlertController,
+  ) {
   }
 
   ngOnInit(){
@@ -28,7 +33,7 @@ export class EditRecipePage implements OnInit{
       buttons:[{
         text:'Add ingridient',
         handler: () => {
-
+          this.createNewIngredient();
         }
       },
         {
@@ -47,6 +52,31 @@ export class EditRecipePage implements OnInit{
     actionSheet.present();
   }
 
+
+  private createNewIngredient(){
+    const newIngredientAlert = this.alertCtrlr.create({
+      title:"Add ingredient",
+      inputs:[
+        {
+          name:'name',
+          placeholder:"Name"
+        }
+      ],
+      buttons:[
+        {
+          text:"Add",
+          handler: data => {
+            if(data.name.trim == "" || data.name == null){
+
+            }
+          }
+        }
+      ]
+    });
+    newIngredientAlert.present();
+  }
+
+
   onSubmit(){
     console.log(this.recipeForm);
   }
@@ -56,6 +86,7 @@ export class EditRecipePage implements OnInit{
       'title': new FormControl(null, Validators.required),
       'description': new FormControl(null, Validators.required),
       'dificulty': new FormControl('Medium', Validators.required),
+      'ingredients': new FormArray([]),
     });
   }
 
