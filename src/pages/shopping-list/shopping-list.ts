@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NgForm} from "@angular/forms";
 import { ShoppingListService } from "../../services/shopping-list";
 import {Ingredient} from "../../models/ingredient";
+import {ActionSheetController} from "ionic-angular";
 @Component({
   selector: 'page-shopping-list',
   templateUrl: 'shopping-list.html',
@@ -10,7 +11,7 @@ export class ShoppingListPage {
 
   items:Ingredient[];
 
-  constructor(private slService:ShoppingListService){
+  constructor(private slService:ShoppingListService, private actionSheetController:ActionSheetController){
 
   }
 
