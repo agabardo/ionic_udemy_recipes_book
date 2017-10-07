@@ -4,6 +4,7 @@ import {
   ToastController
 } from 'ionic-angular';
 import {FormArray, FormControl, FormGroup, Validators} from "@angular/forms";
+import {RecipesService} from "../../services/recipes";
 
 @IonicPage()
 @Component({
@@ -22,6 +23,7 @@ export class EditRecipePage implements OnInit{
     private actionSheetController:ActionSheetController,
     private  alertCtrlr:AlertController,
     private tostCtrlr:ToastController,
+    private recipeSrvc:RecipesService,
   ) {
   }
 
@@ -112,7 +114,17 @@ export class EditRecipePage implements OnInit{
 
 
   onSubmit(){
-    console.log(this.recipeForm);
+    const value = this.recipeForm.value;
+    let ingredients = [];
+    if(value.ingredients.length > 0){
+      ingredients = value.ingredients.map(name => {
+        return {name: name, amount:1};
+      });
+    }
+    this.recipeSrvc.addRecipe(value.title,value.description,value.dificulty,value.ingredients);
+    this.recipeForm.reset();
+    this.navCtrl.popToRoot();
+    console.log(this.recipeSrvc.getRecipes());
   }
 
   initializeForm(){
