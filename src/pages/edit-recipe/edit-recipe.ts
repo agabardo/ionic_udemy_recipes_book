@@ -121,7 +121,7 @@ export class EditRecipePage implements OnInit{
         return {name: name, amount:1};
       });
     }
-    this.recipeSrvc.addRecipe(value.title,value.description,value.dificulty,value.ingredients);
+    this.recipeSrvc.addRecipe(value.title,value.description,value.dificulty,ingredients);
     this.recipeForm.reset();
     this.navCtrl.popToRoot();
     console.log(this.recipeSrvc.getRecipes());

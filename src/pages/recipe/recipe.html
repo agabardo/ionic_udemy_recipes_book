@@ -11,4 +11,13 @@
 <h2>{{recipe.title}}</h2>
   <h3>{{recipe.dificulty}}</h3>
   <p>{{recipe.description}}</p>
+  <ion-list>
+    <ion-item *ngFor="let ingredient of recipe.ingredients">
+      <h4>{{ingredient.amount}} x {{ingredient.name}}</h4>
+    </ion-item>
+  </ion-list>
+
+  <button ion-button outline block (click)="addIngredients()">Add ingredients to shopping list</button>
+  <button ion-button color="primary" block (click)="editRecipe()">Edit recipe</button>
+  <button ion-button color="danger" block (click)="deleteRecipe()">Delete recipe</button>
 </ion-content>
