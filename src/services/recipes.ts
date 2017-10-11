@@ -9,7 +9,7 @@ export class RecipesService{
   }
 
   public removeRecipe(index:number){
-    this.recipies.splice(index,1);
+    this.recipies.splice(index-1,1);
   }
 
   public getRecipes(){
