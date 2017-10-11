@@ -1,7 +1,7 @@
 import {Ingredient} from "./ingredient";
 
 export class Recipe{
-  constructor(public title:String, public description:String, public dificulty:String, public ingredients:Ingredient[]){
+  constructor(public title:string, public description:string, public difficulty:string, public ingredients:Ingredient[]){
 
   }
 }
