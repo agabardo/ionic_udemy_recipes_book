@@ -9,6 +9,8 @@ import {SignupPage} from "../pages/signup/signup";
 import {RecipesPage} from "../pages/recipes/recipes";
 
 import firebase from 'firebase';
+import {assign} from "rxjs/util/assign";
+import {AuthService} from "../services/auth";
 
 @Component({
   templateUrl: 'app.html'
@@ -19,13 +21,24 @@ export class MyApp {
   signinPage:any = SigninPage;
   signupPage:any = SignupPage;
   recipesPage:any = RecipesPage;
+  isAuthenticated = false;
 
   @ViewChild('nav') nav : NavController;
 
-  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, private menuCtrl:MenuController) {
+  constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, private menuCtrl:MenuController, private authService: AuthService) {
     firebase.initializeApp({
       apiKey: "AIzaSyAufZuQPgXf3EPjF63jSA7c_VklmrOTPqM",
       authDomain: "recipesbook-udemy.firebaseapp.com",
+    });
+    firebase.auth().onAuthStateChanged(user => {
+      if (user){
+        this.isAuthenticated = true;
+        this.nav.setRoot(this.tabsPage);
+      }
+      else {
+        this.isAuthenticated = false;
+        this.nav.setRoot(this.signinPage);
+      }
     });
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -37,6 +50,11 @@ export class MyApp {
 
   onLoad(page:any){
     this.nav.setRoot(page);
+    this.menuCtrl.close();
+  }
+
+  onLogOut(){
+    this.authService.signout();
     this.menuCtrl.close();
   }
 

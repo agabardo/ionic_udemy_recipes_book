@@ -10,6 +10,6 @@ export class AuthService{
   }
 
   signout(){
-
+    return firebase.auth().signOut();
   }
 }
