@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {AlertController, IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
 import { NgForm} from "@angular/forms";
 import {AuthService} from "../../services/auth";
 
@@ -10,14 +10,31 @@ import {AuthService} from "../../services/auth";
 })
 export class SignupPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private authSrvc:AuthService) {
+  constructor(
+    public navCtrl: NavController,
+    public navParams: NavParams,
+    private loadingCtrl:LoadingController,
+    private alertCtrl:AlertController,
+    private authSrvc:AuthService) {
   }
 
   onSignup(form:NgForm){
+    const loading = this.loadingCtrl.create({
+      content : "Signing up..."
+    });
+    loading.present();
     this.authSrvc.signup(form.value.email,form.value.password).then((data)=>{
+      loading.dismiss();
       console.log(data);
     }).catch((error)=>{
       console.log(error);
+      const myAlert = this.alertCtrl.create({
+        title:"Error when creating the user",
+        message: error.message,
+        buttons: ['OK']
+      });
+      loading.dismiss();
+      myAlert.present();
     });
   }
 
