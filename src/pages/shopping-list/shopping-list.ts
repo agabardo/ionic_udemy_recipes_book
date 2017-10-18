@@ -4,6 +4,7 @@ import { ShoppingListService } from "../../services/shopping-list";
 import {Ingredient} from "../../models/ingredient";
 import {ActionSheetController, PopoverController} from "ionic-angular";
 import {SLOptionsPage} from "./sl-options/sl-options";
+import {AuthService} from "../../services/auth";
 @Component({
   selector: 'page-shopping-list',
   templateUrl: 'shopping-list.html',
@@ -12,7 +13,7 @@ export class ShoppingListPage {
 
   items:Ingredient[];
 
-  constructor(private slService:ShoppingListService, private actionSheetController:ActionSheetController, private popOverCtrlr: PopoverController){
+  constructor(private slService:ShoppingListService, private actionSheetController:ActionSheetController, private popOverCtrlr: PopoverController, private authSrvc: AuthService){
 
   }
 
@@ -34,6 +35,18 @@ export class ShoppingListPage {
   onShowOptions(event:MouseEvent){
     const popMeOver = this.popOverCtrlr.create(SLOptionsPage);
     popMeOver.present({ev:event});
+    popMeOver.onDidDismiss(data => {
+      if(data.action == "load"){
+
+      }
+      else{
+        this.authSrvc.getActiveUser().getToken().then(data => {
+
+        }).catch(error => {
+
+        });
+      }
+    })
   }
 
 }
