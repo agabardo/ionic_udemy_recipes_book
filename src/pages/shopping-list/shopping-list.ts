@@ -37,16 +37,20 @@ export class ShoppingListPage {
     popMeOver.present({ev:event});
     popMeOver.onDidDismiss(data => {
       if(data.action == "load"){
-
+        this.loadItems();
       }
       else{
-        this.authSrvc.getActiveUser().getToken().then(data => {
+        this.authSrvc.getActiveUser().getToken().then((token:string) => {
 
         }).catch(error => {
 
         });
       }
     })
+  }
+
+  private loadItems(){
+    this.items = this.slService.getItems();
   }
 
 }
