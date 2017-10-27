@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NgForm} from "@angular/forms";
 import { ShoppingListService } from "../../services/shopping-list";
 import {Ingredient} from "../../models/ingredient";
-import {ActionSheetController, PopoverController} from "ionic-angular";
+import {ActionSheetController, LoadingController, PopoverController} from "ionic-angular";
 import {SLOptionsPage} from "./sl-options/sl-options";
 import {AuthService} from "../../services/auth";
 import {isSuccess} from "@angular/http/src/http_utils";
@@ -14,7 +14,12 @@ export class ShoppingListPage {
 
   items:Ingredient[];
 
-  constructor(private slService:ShoppingListService, private actionSheetController:ActionSheetController, private popOverCtrlr: PopoverController, private authSrvc: AuthService){
+  constructor(
+    private slService:ShoppingListService,
+    private actionSheetController:ActionSheetController,
+    private popOverCtrlr: PopoverController,
+    private authSrvc: AuthService,
+    private loadingController:LoadingController){
 
   }
 
@@ -34,19 +39,26 @@ export class ShoppingListPage {
   }
 
   onShowOptions(event:MouseEvent){
+
+
     const popMeOver = this.popOverCtrlr.create(SLOptionsPage);
     popMeOver.present({ev:event});
     popMeOver.onDidDismiss(data => {
       if(data.action == "load"){
+        const loading = this.loadingController.create();
+        loading.setContent("Loading, please wait");
+        loading.present();
         this.authSrvc.getActiveUser().getToken().then((token:string) => {
           this.slService.fetchList(token)
             .subscribe((list:Ingredient[])=> {
               if(list){
                 this.items = list;
+                loading.dismiss();
               }
             }, error => {
-                  console.log(error);
-                });
+              console.log(error);
+              loading.dismiss();
+            });
         }).catch(error => {
           console.log(error);
         });
