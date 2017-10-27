@@ -5,6 +5,7 @@ import {Ingredient} from "../../models/ingredient";
 import {ActionSheetController, PopoverController} from "ionic-angular";
 import {SLOptionsPage} from "./sl-options/sl-options";
 import {AuthService} from "../../services/auth";
+import {isSuccess} from "@angular/http/src/http_utils";
 @Component({
   selector: 'page-shopping-list',
   templateUrl: 'shopping-list.html',
@@ -41,7 +42,13 @@ export class ShoppingListPage {
       }
       else{
         this.authSrvc.getActiveUser().getToken().then((token:string) => {
-
+          this.slService.storeList(token)
+            .subscribe(()=>{
+              console.log("Success"),
+                error => {
+                  console.log(error);
+                }
+            });
         }).catch(error => {
 
         });
@@ -50,6 +57,7 @@ export class ShoppingListPage {
   }
 
   private loadItems(){
+    console.log("Oi");
     this.items = this.slService.getItems();
   }
 
