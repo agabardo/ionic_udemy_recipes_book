@@ -38,7 +38,18 @@ export class ShoppingListPage {
     popMeOver.present({ev:event});
     popMeOver.onDidDismiss(data => {
       if(data.action == "load"){
-        this.loadItems();
+        this.authSrvc.getActiveUser().getToken().then((token:string) => {
+          this.slService.fetchList(token)
+            .subscribe((list:Ingredient[])=> {
+              if(list){
+                this.items = list;
+              }
+            }, error => {
+                  console.log(error);
+                });
+        }).catch(error => {
+          console.log(error);
+        });
       }
       else{
         this.authSrvc.getActiveUser().getToken().then((token:string) => {
@@ -50,15 +61,10 @@ export class ShoppingListPage {
                 }
             });
         }).catch(error => {
-
+          console.log(error);
         });
       }
     })
-  }
-
-  private loadItems(){
-    console.log("Oi");
-    this.items = this.slService.getItems();
   }
 
 }

@@ -38,4 +38,15 @@ export class ShoppingListService{
       });
   }
 
+  fetchList(token:string){
+    let user = this.authService.getActiveUser().uid;
+    return this.http.get("https://recipesbook-udemy.firebaseio.com/" + user + "/shopping-list.json?auth=" + token)
+      .map((response:Response) => {
+        return response.json();
+      })
+      .do(data => {
+        this.ingredients = data;
+      })
+  }
+
 }
